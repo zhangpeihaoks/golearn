@@ -1,0 +1,29 @@
+提供一个动态规划的版本
+dp[i] 表示以字符串s中第i个字符结尾的最长无重复字串长度
+s[0] s[1] ... s[i - dp[i-1]] ... s[i-1] s[i] ... s[n-1]
+显然dp[i]分为两种情况：
+1. 如果 s[i] 属于 以s[i-1]结尾的最大无重复字符串中 即s[i] in s[i - dp[i-1]] ... s[i-1]。令temp = s[i - dp[i-1]] ... s[i-1]
+   这时候只要在字符串temp中找到与s[i] 相同的字符，然后从后面一个算起到s[i]的长度就是dp[i]的值
+2. 如果 s[i] 不属于 以s[i-1]结尾的最大无重复字符串中，这时候dp[i] = dp[i-1] + 1
+   最后的输出dp里的最大值即可。代码如下：
+
+* 
+
+```
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        if len(s) == 0:
+            return 0
+        dp = [0 for i in range(len(s))]
+        dp[0] = 1
+        for i in range(1,len(s)):
+            n = dp[i-1]
+            temp = s[i - dp[i-1]:i]
+            if s[i] in temp:
+                loc = temp.find(s[i])
+                dp[i] = dp[i-1] - loc
+            else:
+                dp[i] = dp[i-1]+1
+        return max(dp)
+```
+
