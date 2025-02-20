@@ -45,10 +45,10 @@ package leetcode
  *     Next *ListNode
  * }
  */
-//type ListNode struct {
-//	Val  int
-//	Next *ListNode
-//}
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
 
 func mergeTwoLists(list1 *ListNode, list2 *ListNode) *ListNode {
 	first := &ListNode{}
