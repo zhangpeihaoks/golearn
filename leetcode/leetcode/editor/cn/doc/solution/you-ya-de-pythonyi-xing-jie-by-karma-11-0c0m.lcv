@@ -1,0 +1,25 @@
+> Problem: [189. 轮转数组](https://leetcode.cn/problems/rotate-array/description/)
+
+[TOC]
+
+# Code
+
+纯粹的Python语法
+
+> 1 切片取余
+
+* []
+
+```python
+n = len(nums)
+nums[:] = nums[-k % n:] + nums[:-k % n]
+```
+
+> 2 边删边插
+
+* []
+
+```python
+for _ in range(k): nums.insert(0, nums.pop())
+```
+

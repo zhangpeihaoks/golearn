@@ -1,0 +1,21 @@
+func similarPairs(words []string) int {
+	maskCounts := make(map[int]int)
+	for _, word := range words {
+		mask := 0
+		for _, c := range word {
+			mask |= 1 << (c - 'a')
+		}
+		maskCounts[mask]++
+	}
+	res := 0
+	for _, count := range maskCounts {
+		if count >= 2 {
+			res += count * (count - 1) / 2
+		}
+	}
+	return res
+}
+
+
+//runtime:0 ms
+//memory:6 MB
