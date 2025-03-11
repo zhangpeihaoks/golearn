@@ -42,22 +42,18 @@ package leetcode
 
 // leetcode submit region begin(Prohibit modification and deletion)
 func lengthOfLongestSubstring(s string) int {
-	start, maxLen := 0, 0           // 初始化窗口起点和最大长度
-	lastIndex := make(map[byte]int) // 哈希表记录字符最后出现的位置
-
-	for i := 0; i < len(s); i++ {
-		c := s[i]
-		// 如果字符已存在且在窗口内，移动窗口起点
-		if idx, ok := lastIndex[c]; ok && idx >= start {
-			start = idx + 1
+	ans := 0
+	left := 0
+	m := make(map[byte]int)
+	for index := range s {
+		m[s[index]] += 1
+		for m[s[index]] > 1 {
+			m[s[left]] -= 1
+			left++
 		}
-		lastIndex[c] = i // 更新字符最后位置
-		// 计算当前窗口长度并更新最大值
-		if currentLen := i - start + 1; currentLen > maxLen {
-			maxLen = currentLen
-		}
+		ans = max(ans, index-left+1)
 	}
-	return maxLen
+	return ans
 }
 
 //leetcode submit region end(Prohibit modification and deletion)

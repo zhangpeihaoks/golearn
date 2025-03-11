@@ -1,6 +1,8 @@
 package dynamic_programming
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func arrPlus(arr []int) int {
 	if len(arr) == 0 {

@@ -1,0 +1,23 @@
+func minCostClimbingStairs(cost []int) int {
+    n := len(cost)
+    memo := make([]int, n+1)
+    for i := range memo {
+        memo[i] = -1 // -1 表示没有计算过
+    }
+    var dfs func(int) int
+    dfs = func(i int) int {
+        if i <= 1 { // 递归边界
+            return 0
+        }
+        p := &memo[i]
+        if *p != -1 { // 之前计算过
+            return *p
+        }
+        res := min(dfs(i-1)+cost[i-1], dfs(i-2)+cost[i-2])
+        *p = res // 记忆化
+        return res
+    }
+    return dfs(n)
+}
+//runtime:0 ms
+//memory:4.9 MB
