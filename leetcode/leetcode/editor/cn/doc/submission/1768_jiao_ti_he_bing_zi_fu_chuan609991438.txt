@@ -1,0 +1,21 @@
+func mergeAlternately(word1 string, word2 string) string {
+    lenWord1, lenWord2 := len(word1), len(word2)
+	w1Left,w2Left := 0, 0
+	result:=make([]byte,lenWord1+lenWord2)
+	for i:=0; i<len(result);  {
+		if w1Left<lenWord1 {
+			result[i] = word1[w1Left]
+			w1Left++
+			i++
+		}
+		if w2Left<lenWord2 {
+			result[i] = word2[w2Left]
+			w2Left++
+			i++
+		}
+	}
+	return string(result)
+}
+
+//runtime:0 ms
+//memory:3.9 MB

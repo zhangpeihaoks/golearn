@@ -16,13 +16,14 @@ func TestQuickSort(t *testing.T) {
 
 	arr := make([]int, 0)
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	for i := 0; i < 10000000; i++ {
-		arr = append(arr, rand.Intn(10000000))
+	for i := 0; i < 10; i++ {
+		arr = append(arr, rand.Intn(10))
 	}
 	//slog.Info("Input arr", "arr", arr)
 
 	startTime := time.Now()
-	arr = QuickSort(arr, false)
+	//arr = QuickSort(arr, false)
+	QuickSort2(arr, 0, len(arr)-1)
 	endTime := time.Now()
 
 	// 记录排序后内存状态

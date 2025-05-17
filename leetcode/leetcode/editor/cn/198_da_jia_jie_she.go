@@ -37,6 +37,9 @@ package leetcode
 
 // leetcode submit region begin(Prohibit modification and deletion)
 func rob(nums []int) int {
+	return rob1(nums)
+}
+func rob2(nums []int) int {
 	n := len(nums)
 	ans := make([]int, n+2)
 	ans[0] = nums[0]
@@ -51,17 +54,17 @@ func rob1(nums []int) int {
 	for i := range cache {
 		cache[i] = -1
 	}
-	var dfs func(index int) int
-	dfs = func(index int) int {
-		if index < 0 {
+	var dfs func(int) int
+	dfs = func(i int) int {
+		if i < 0 {
 			return 0
 		}
-		if cache[index] == -1 {
-			res := max(dfs(index-1), dfs(index-2)+nums[index])
-			cache[index] = res
-			return res
+		if cache[i] != -1 {
+			return cache[i]
 		}
-		return cache[index]
+		ans := max(dfs(i-1), dfs(i-2)+nums[i])
+		cache[i] = ans
+		return ans
 	}
 	return dfs(len(nums) - 1)
 }
