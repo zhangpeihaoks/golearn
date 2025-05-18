@@ -3,10 +3,11 @@ package sort
 import (
 	"context"
 	"fmt"
-	"math/rand/v2"
+	rand2 "math/rand"
 	"reflect"
 	"runtime"
 	"slices"
+	"sort"
 	"strings"
 	"sync"
 	"testing"
@@ -16,24 +17,33 @@ import (
 )
 
 func TestSort(t *testing.T) {
-	arrSize := 100000
+	arrSize := 10000000
 	arr := make([]int, arrSize)
-	for i := 0; i < arrSize; i++ {
-		arr[i] = rand.IntN(10000)
+	wg := &sync.WaitGroup{}
+	gcCount := runtime.NumCPU()
+	fmt.Println("gcCount:", gcCount)
+	for i := 0; i < gcCount; i++ {
+		wg.Add(1)
+		go func(index int) {
+			defer wg.Done()
+			r := rand2.New(rand2.NewSource(gtime.Now().UnixNano() + int64(index)))
+			for j := index * arrSize / gcCount; j < (index+1)*arrSize/gcCount; j++ {
+				arr[j] = r.Intn(1000000)
+			}
+		}(i)
 	}
+	wg.Wait()
 
 	//fmt.Println("arr", arr)
 
-	wg := &sync.WaitGroup{}
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*gtime.S)
+	ctx, cancel := context.WithTimeout(context.Background(), 60*gtime.S)
 	defer cancel()
-
+	//
 	arr0 := slices.Clone(arr)
 	//fmt.Println("before sort:", arr0)
 	wg.Add(1)
 	go MeasureExecutionTime(ctx, func(ctx context.Context, ints []int, b bool) {
-		slices.Sort(ints)
+		sort.Ints(ints)
 	}, arr0, true, wg)
 
 	arr1 := slices.Clone(arr)
@@ -100,16 +110,16 @@ func TestSort(t *testing.T) {
 
 	arr9 := slices.Clone(arr)
 	wg.Add(1)
-	ctx2, cancel2 := context.WithTimeout(context.TODO(), 60*gtime.S)
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 60*gtime.S)
 	defer cancel2()
 	go MeasureExecutionTime(ctx2, ParallelSort, arr9, false, wg)
-
+	startTime = time.Now()
 	go func() {
 		wg.Wait() // 等待所有协程完成
 		done <- struct{}{}
 	}()
 	var once sync.Once
-	for !quitSelect {
+	for {
 		select {
 		case <-ticker.C:
 			fmt.Println("parallelSort process running..., elapsed time:", time.Since(startTime).String())
@@ -132,6 +142,10 @@ func TestSort(t *testing.T) {
 // MeasureExecutionTime 用于测量排序函数的执行时间
 func MeasureExecutionTime(ctx context.Context, sortFunc func(context.Context, []int, bool), arr []int, asc bool, wg *sync.WaitGroup) {
 	defer wg.Done()
+	defer func() {
+		arr = nil
+		runtime.GC()
+	}()
 
 	//	获取函数名
 	fullFuncName := runtime.FuncForPC(reflect.ValueOf(sortFunc).Pointer()).Name()
