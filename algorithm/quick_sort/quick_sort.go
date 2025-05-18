@@ -2,7 +2,6 @@ package quick_sort
 
 import (
 	"math/rand/v2"
-	"sort"
 )
 
 func QuickSort(arr []int, asc bool) []int {
@@ -47,7 +46,6 @@ func QuickSort(arr []int, asc bool) []int {
 }
 
 func QuickSort2(arr []int, left, right int) {
-	sort.Sort()
 	if left >= right {
 		return
 	}
