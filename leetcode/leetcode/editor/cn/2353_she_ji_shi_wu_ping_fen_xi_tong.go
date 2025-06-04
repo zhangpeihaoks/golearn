@@ -153,7 +153,7 @@ func (this *FoodRatings) HighestRated(cuisine string) string {
 
 /**
  * Your FoodRatings object will be instantiated and called as such:
- * obj := Constructor(foods, cuisines, ratings);
+ * obj := ConstructorOrderedStream(foods, cuisines, ratings);
  * obj.ChangeRating(food,newRating);
  * param_2 := obj.HighestRated(cuisine);
  */

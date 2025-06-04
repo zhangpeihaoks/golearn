@@ -44,7 +44,7 @@ package leetcode
 // Related Topics 贪心 数组 动态规划 👍 2657 👎 0
 
 // leetcode submit region begin(Prohibit modification and deletion)
-func maxProfit(prices []int) int {
+func maxProfit2(prices []int) int {
 	np := make([][2]int, len(prices))
 	np[0][0] = -prices[0]
 	for i := 1; i < len(prices); i++ {

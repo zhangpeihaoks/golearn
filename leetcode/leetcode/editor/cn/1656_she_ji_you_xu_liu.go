@@ -1,7 +1,5 @@
 package leetcode
 
-import "fmt"
-
 //有 n 个 (id, value) 对，其中 id 是 1 到 n 之间的一个整数，value 是一个字符串。不存在 id 相同的两个 (id,
 //value) 对。
 //
@@ -62,7 +60,7 @@ type OrderedStream struct {
 	Arr []string
 }
 
-func Constructor(n int) OrderedStream {
+func ConstructorOrderedStream(n int) OrderedStream {
 	return OrderedStream{Ptr: 1, Arr: make([]string, n)}
 }
 
@@ -85,7 +83,7 @@ func (this *OrderedStream) Insert(idKey int, value string) []string {
 
 /**
  * Your OrderedStream object will be instantiated and called as such:
- * obj := Constructor(n);
+ * obj := ConstructorOrderedStream(n);
  * param_1 := obj.Insert(idKey,value);
  */
 //leetcode submit region end(Prohibit modification and deletion)

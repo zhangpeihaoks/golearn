@@ -50,6 +50,12 @@ package leetcode
  * }
  */
 
+type TreeNode struct {
+	Val   int
+	Left  *TreeNode
+	Right *TreeNode
+}
+
 func maxLevelSum(root *TreeNode) (ans int) {
 	result := []int{}
 	var dfs func(root *TreeNode, level int)

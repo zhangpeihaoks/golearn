@@ -1,7 +1,5 @@
 package leetcode
 
-import "strings"
-
 //请你设计一个带光标的文本编辑器，它可以实现以下功能：
 //
 //
@@ -84,7 +82,7 @@ type TextEditor struct {
 	Left, Right []byte
 }
 
-func Constructor() TextEditor {
+func ConstructorTextEditor() TextEditor {
 	return TextEditor{
 		Left:  make([]byte, 0),
 		Right: make([]byte, 0),
@@ -125,7 +123,7 @@ func (this *TextEditor) CursorRight(k int) string {
 
 /**
  * Your TextEditor object will be instantiated and called as such:
- * obj := Constructor();
+ * obj := ConstructorOrderedStream();
  * obj.AddText(text);
  * param_2 := obj.DeleteText(k);
  * param_3 := obj.CursorLeft(k);

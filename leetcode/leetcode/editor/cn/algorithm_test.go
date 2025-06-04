@@ -15,3 +15,7 @@ func TestRemoveDuplicates2(t *testing.T) {
 	data := removeDuplicates2(arr)
 	fmt.Println(data)
 }
+
+func TestMinimumSum(t *testing.T) {
+	minimumSum(5, 4)
+}
