@@ -19,3 +19,7 @@ func TestRemoveDuplicates2(t *testing.T) {
 func TestMinimumSum(t *testing.T) {
 	minimumSum(5, 4)
 }
+
+func TestIsPalindrome(t *testing.T) {
+	_ = isPalindrome(121)
+}

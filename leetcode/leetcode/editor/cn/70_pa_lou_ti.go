@@ -38,13 +38,18 @@ package leetcode
 
 // leetcode submit region begin(Prohibit modification and deletion)
 func climbStairs(n int) int {
-	arr := make([]int, n+1)
-	arr[0] = 1
-	arr[1] = 1
-	for i := 2; i <= n; i++ {
-		arr[i] = arr[i-1] + arr[i-2]
+	for n <= 2 {
+		return n
 	}
-	return arr[n]
+	current := 0
+	prev1 := 2
+	prev2 := 1
+	for i := 3; i <= n; i++ {
+		current = prev1 + prev2
+		prev2 = prev1
+		prev1 = current
+	}
+	return current
 }
 
 //leetcode submit region end(Prohibit modification and deletion)

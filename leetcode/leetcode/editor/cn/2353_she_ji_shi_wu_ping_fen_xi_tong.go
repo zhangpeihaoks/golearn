@@ -93,7 +93,7 @@ type Food struct {
 	Rating  int
 }
 
-func Constructor(foods []string, cuisines []string, ratings []int) FoodRatings {
+func Constructor2(foods []string, cuisines []string, ratings []int) FoodRatings {
 	fr := FoodRatings{
 		FoodsMap:            make(map[string]*Food),
 		HighestRatedFoodMap: make(map[string]*Food),

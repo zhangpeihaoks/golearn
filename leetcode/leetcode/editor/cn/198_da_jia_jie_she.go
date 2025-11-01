@@ -68,5 +68,18 @@ func rob1(nums []int) int {
 	}
 	return dfs(len(nums) - 1)
 }
+func rob3(nums []int) int {
+	data := make([][]int, len(nums))
+	for i := range data {
+		data[i] = make([]int, 2)
+	}
+	data[0][0] = 0
+	data[0][1] = nums[0]
+	for i := 1; i < len(nums); i++ {
+		data[i][0] = max(data[i-1][0], data[i-1][1])
+		data[i][1] = data[i-1][0] + nums[i]
+	}
+	return max(data[len(nums)-1][0], data[len(nums)-1][1])
+}
 
 //leetcode submit region end(Prohibit modification and deletion)
