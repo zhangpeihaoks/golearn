@@ -1,7 +1,5 @@
 package leetcode
 
-import "container/list"
-
 //设计和构建一个“最近最少使用”缓存，该缓存会删除最近最少使用的项目。缓存应该从键映射到值(允许你插入和检索特定键对应的值)，并在初始化时指定最大容量。当缓存
 //被填满时，它应该删除最近最少使用的项目。
 //
@@ -29,55 +27,90 @@ import "container/list"
 // Related Topics 设计 哈希表 链表 双向链表 👍 206 👎 0
 
 // leetcode submit region begin(Prohibit modification and deletion)
-type LRUCache struct {
-	cache    map[int]*list.Element
-	list     *list.List
-	capacity int
+type Node struct {
+	K    int
+	V    int
+	Prev *Node
+	Next *Node
 }
-
-type Item struct {
-	Key   int
-	Value int
+type LRUCache struct {
+	Cache    map[int]*Node
+	Head     *Node
+	Tail     *Node
+	Capacity int
+	Size     int
 }
 
 func Constructor(capacity int) LRUCache {
-	return LRUCache{list: list.New(), capacity: capacity, cache: make(map[int]*list.Element)}
+	lru := LRUCache{
+		Cache: make(map[int]*Node, capacity),
+		Head: &Node{
+			K: -1,
+			V: -1,
+		},
+		Tail: &Node{
+			K: -1,
+			V: -1,
+		},
+		Capacity: capacity,
+		Size:     0,
+	}
+	lru.Head.Next = lru.Tail
+	lru.Tail.Prev = lru.Head
+	return lru
+}
+
+func (t *LRUCache) removeNode(n *Node) {
+	n.Prev.Next = n.Next
+	n.Next.Prev = n.Prev
+}
+
+func (t *LRUCache) addToHead(n *Node) {
+	n.Next = t.Head.Next
+	n.Prev = t.Head
+	t.Head.Next.Prev = n
+	t.Head.Next = n
+}
+
+func (t *LRUCache) moveToHead(n *Node) {
+	t.removeNode(n)
+	t.addToHead(n)
+}
+
+func (t *LRUCache) removeTail() *Node {
+	node := t.Tail.Prev
+	t.removeNode(node)
+	return node
 }
 
 func (t *LRUCache) Get(key int) int {
-	data, ok := t.cache[key]
-	if ok {
-		t.list.MoveToFront(data)
-		return data.Value.(*Item).Value
+	item, ok := t.Cache[key]
+	if !ok {
+		return -1
 	}
-	return -1
-}
-
-func (t *LRUCache) getItem(key int) *list.Element {
-	data, ok := t.cache[key]
-	if ok {
-		return data
-	}
-	return nil
+	t.moveToHead(item)
+	return item.V
 }
 
 func (t *LRUCache) Put(key int, value int) {
-	item := t.getItem(key)
-	if item != nil {
-		item.Value.(*Item).Value = value
-		t.list.MoveToFront(item)
-		return
-	}
+	if item, ok := t.Cache[key]; ok {
+		item.V = value
+		t.moveToHead(item)
+	} else {
+		newNode := &Node{
+			K: key,
+			V: value,
+		}
+		t.Cache[key] = newNode
+		t.addToHead(newNode)
+		t.Size++
 
-	if t.list.Len() >= t.capacity {
-		// 删除最少使用的
-		tail := t.list.Back()
-		if tail != nil {
-			delete(t.cache, tail.Value.(*Item).Key)
-			t.list.Remove(tail)
+		if t.Size > t.Capacity {
+			tail := t.removeTail()
+			delete(t.Cache, tail.K)
+			t.Size--
 		}
 	}
-	t.cache[key] = t.list.PushFront(&Item{key, value})
 }
 
 /**
