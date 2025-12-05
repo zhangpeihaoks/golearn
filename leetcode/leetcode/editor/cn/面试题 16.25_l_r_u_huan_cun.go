@@ -113,6 +113,7 @@ func (t *LRUCache) Put(key int, value int) {
 	}
 }
 
+//	terst
 /**
  * Your LRUCache object will be instantiated and called as such:
  * obj := Constructor(capacity);
